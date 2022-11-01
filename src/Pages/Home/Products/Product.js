@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 const Product = () => {
     const [products,setProduct]=useState([]);
     useEffect(()=>{
-        fetch('products.json')
+        fetch('http://localhost:5000/products')
         .then(res => res.json())
         .then(data => setProduct(data))
     },[])
@@ -19,7 +19,7 @@ const Product = () => {
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-24'>
             
                 {
-                 products.map(product => <ProductCard key={product.id} product={product} />)
+                 products.map(product => <ProductCard key={product._id} product={product} />)
                 }
             </div>
         </div>

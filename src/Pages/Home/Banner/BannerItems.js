@@ -16,7 +16,7 @@ const BannerItems = ({slide}) => {
             Servicing
           </h1>
         </div>
-    
+     
         <div className="absolute flex justify-end transform -translate-y-1/2 left-24 w-2/5  top-1/2">
         <p className='text-white text-xl'>There Are Many Variations Of Passages Of Available,But <br /> The Majority Have Suffered Alteration in Some Form </p>
         </div>
@@ -28,8 +28,8 @@ const BannerItems = ({slide}) => {
         </div>
     
         <div className="absolute flex justify-end transform -translate-y-1/2 left-5 right-5 bottom-0">
-          <a href={`#slide${prev}`} className="btn btn-circle mr-5 focus:bg-red-700">❮</a> 
-          <a href={`#slide${next}`} className="btn btn-circle  focus:bg-red-700">❯</a>
+          <a href={`#slide${prev}`} className="btn btn-circle mr-5 hover:bg-red-400 border-none focus:bg-red-700">❮</a> 
+          <a href={`#slide${next}`} className="btn btn-circle hover:bg-red-400 border-none bg-red-700">❯</a>
         </div>
       </div> 
     );
