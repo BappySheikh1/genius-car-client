@@ -3,7 +3,7 @@ import {  FaArrowAltCircleRight } from 'react-icons/fa';
 
 const ServiceCrad = ({service}) => {
     const {img,price,title}=service
-    console.log(service);
+    // console.log(service);
     return (
         <div className="card card-compact w-96 bg-base-100 shadow-xl mb-20 p-5">
   <figure><img style={{height:'250px'}} src={img} alt="Shoes" /></figure>
