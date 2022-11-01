@@ -1,21 +1,55 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import image from '../../assets/images/login/login.svg'
+import { AuthContext } from '../../useContexts/AuthProvider';
 
 
 
 const Login = () => {
+  const [userEmail,setUserEmail]=useState('')
     const [error,setError]=useState('')
-    
+    const {userLogIn,forgetPassword}=useContext(AuthContext)
+    const navigate=useNavigate()
 
     const handleSubmit=(event)=>{
         event.preventDefault();
         const form=event.target;
         const email=form.email.value
         const password=form.password.value
-     
+        
+        userLogIn(email,password)
+        .then(result =>{
+          const user =result.user
+          console.log(user);
+          navigate('/')
+        })
+        .catch(error =>{
+          console.log(error);
+        })
     }
 
+    const handleUserEmail=(event)=>{
+     setUserEmail(event.target.value)
+    }
+
+    const handleForgetPassword=()=>{
+      forgetPassword(userEmail)
+      .then(()=>{
+        toast.success('Forgeted Password Please Check your email')
+      })
+      .catch(err =>{
+        console.log(err);
+      })
+    }
+    
+    const handleGoogleLogin=()=>{
+
+    }
+    const handleFaceBookLogin=()=>{
+
+    }
+     
     return (
         <div className="hero w-full my-20">
   <div className="hero-content grid gap-20 md:grid-cols-2 flex-col lg:flex-row">
@@ -29,8 +63,8 @@ const Login = () => {
         <div className="form-control">
           <label className="label">
             <span className="label-text">Email</span>
-          </label>
-          <input type="text" placeholder="email" name='email' className="input input-bordered" required/>
+           </label>
+          <input type="text" onBlur={handleUserEmail} placeholder="email" name='email' className="input input-bordered" required/>
         </div>
         <div className="form-control">
           <label className="label">
@@ -38,7 +72,7 @@ const Login = () => {
           </label>
           <input type="password" placeholder="password" name='password' className="input input-bordered" required/>
           <label className="label">
-            <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+            <a onClick={handleForgetPassword} className="label-text-alt link link-hover">Forgot password?</a>
           </label>
         </div>
         <p className='text-red-600'>{error}</p>
@@ -46,7 +80,13 @@ const Login = () => {
             <input className="btn btn-primary" type="submit" value='Login' />
         </div>
       </form>
-      <p className='p-5'>New to Genius Car <Link className='text-orange-600 font-bold text-center ' to='/singup'>Sign Up</Link></p>
+      <div className='text-center my-5'>
+               <p className='text-xl mb-3'>Or Sign Up with</p>
+                 <button onClick={handleGoogleLogin} className='btn btn-outline btn-info mr-2'>Google</button>
+                 <button onClick={handleFaceBookLogin} className='btn btn-outline btn-info '>FaceBook</button>
+                 <p className='p-5'>New to Genius Car <Link className='text-orange-600 font-bold text-center ' to='/singup'>Sign Up</Link></p>
+            </div>
+      
     </div>
   </div>
         </div>

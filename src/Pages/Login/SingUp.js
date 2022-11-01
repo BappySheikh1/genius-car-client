@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import image from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../useContexts/AuthProvider';
+import { FcGoogle } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const SingUp = () => {
-    const {createUser}=useContext(AuthContext)
+    const {createUser,userEmailVerification,updateUserProfile}=useContext(AuthContext)
     
-    const handleSubmit=(event)=>{
+     const handleSubmit=(event)=>{
      event.preventDefault();
      const form=event.target;
      const name=form.name.value
@@ -18,10 +20,39 @@ const SingUp = () => {
         const user =result.user
         console.log(user);
         form.reset();
+        handleUserEmail()
+        handleUserName(name)
      })
      .catch(error =>{
         console.log(error);
      })
+    }
+
+    const handleUserEmail=()=>{
+      userEmailVerification()
+      .then(()=>{
+      toast.success('Please Check Your Email & Verification your email',{autoClose:500})
+      })
+      .catch(error =>{
+        console.log(error);
+      })
+    }
+
+    const handleUserName=(name)=>{
+      updateUserProfile(name)
+      .then(()=>{
+
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    }
+
+    const handleGoogleLogin=()=>{
+
+    }
+    const handleFaceBookLogin=()=>{
+
     }
 
     return (
@@ -59,7 +90,12 @@ const SingUp = () => {
                   <input className="btn btn-primary" type="submit" value='Sign Up' />
               </div>
             </form>
-            <p className='p-5'>Already have an account? <Link className='text-orange-600 font-bold text-center ' to='/login'>Log In</Link></p>
+            <div className='text-center my-5'>
+               <p className='text-xl mb-3'>Or Sign Up with</p>
+                 <button onClick={handleGoogleLogin} className='btn btn-outline btn-info mr-2'>Google</button>
+                 <button onClick={handleFaceBookLogin} className='btn btn-outline btn-info '>FaceBook</button>
+                <p className='p-5'>Already have an account? <Link className='text-orange-600 font-bold text-center ' to='/login'>Log In</Link></p>
+            </div>
           </div>
         </div>
               </div>
