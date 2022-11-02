@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaCross, FaRemoveFormat, FaUser } from 'react-icons/fa';
 
 const OrderRow = ({order,orders,setOrder}) => {
-    const {serviceName, price,_id,email, customer,phone,service}=order
+    const {serviceName, price,_id,email, customer,phone,service,status}=order
      const [orderService,setOrderService]=useState({})
 
     useEffect(()=>{
@@ -28,6 +28,29 @@ const OrderRow = ({order,orders,setOrder}) => {
             }
         })
       }        
+    }
+
+    const handleUpdate=(_id)=>{
+      fetch(`http://localhost:5000/orders/${_id}`,{
+        method: 'PATCH', 
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({status: 'Approved'})
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if(data.modifiedCount > 0){
+             alert('Status Updated')
+             const remaining=orders.filter(odr => odr._id !== _id )
+             const approving =orders.find(odr => odr._id === _id)
+             approving.status="Approved"
+
+             const newOrders =[approving , ...remaining]
+             setOrder(newOrders)
+        }
+      })
     }
 
     return (
@@ -61,7 +84,9 @@ const OrderRow = ({order,orders,setOrder}) => {
         </td>
         <td>{email}</td>
         <th>
-          <button className="btn btn-ghost btn-xs">details</button>
+          <button
+           onClick={()=>handleUpdate(_id)}
+           className="btn btn-ghost btn-xs">{status ? status : 'pending'}</button>
         </th>
       </tr>
      
