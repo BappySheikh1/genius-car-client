@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
+import { AuthContext } from '../../useContexts/AuthProvider';
+import { toast } from 'react-toastify';
 
 const Header = () => {
+  const {user,logOutUser}=useContext(AuthContext)
+  
+ const handleLogOut=()=>{
+  logOutUser()
+  .then(()=> {
+    toast.success("LogOut successfully", {autoClose: 500})
+   })
+   .catch(err=> console.log(err))
+ }
+
     const menuItems=<>
-    <li className='font-semibold'><Link to='/orders'>Order</Link></li>
     <li className='font-semibold'><Link to='/'>Home</Link></li>
-    <li className='font-semibold'><Link to='/login'>Log in</Link></li>
+    {
+      user?.uid ? 
+      <>
+      <li className='font-semibold'><Link to='/orders'>Order</Link></li>
+      <li className='font-semibold'><button onClick={handleLogOut}>Log Out</button></li> 
+      </>
+      :
+      <li className='font-semibold'><Link to='/login'>Log in</Link></li>
+
+    }
+
     </>
     return (
         <div>

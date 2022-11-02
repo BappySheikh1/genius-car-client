@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaCross, FaRemoveFormat, FaUser } from 'react-icons/fa';
 
-const OrderRow = ({order}) => {
+const OrderRow = ({order,orders,setOrder}) => {
     const {serviceName, price,_id,email, customer,phone,service}=order
      const [orderService,setOrderService]=useState({})
 
@@ -11,10 +11,23 @@ const OrderRow = ({order}) => {
         .then(data => setOrderService(data))
     },[service])
    
-    const handleRemoveButton =()=>{
-        fetch(`http://localhost:5000/orders/${order._id}`)
+    const handleDelete =(_id)=>{
+      const proceed =window.confirm('are you sure delete this items')
+      if(proceed){
+        fetch(`http://localhost:5000/orders/${_id}`,{
+            method:'DELETE'
+        })
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data);
+            if(data.deletedCount > 0){
+              alert('deleted successFully')
+
+              const remaining=orders.filter(or => or._id !== _id)
+              setOrder(remaining)
+            }
+        })
+      }        
     }
 
     return (
@@ -22,7 +35,7 @@ const OrderRow = ({order}) => {
             
       <tr>
         <th>
-          <button className='btn btn-ghost font-bold' >x</button>
+          <button className='btn btn-ghost font-bold' onClick={()=>handleDelete(_id)} >x</button>
         </th>
         <td>
           <div className="flex items-center space-x-3">
