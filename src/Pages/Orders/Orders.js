@@ -14,7 +14,7 @@ const Orders = () => {
     },[user?.email])
     // console.log(orders);
     return (
-        <div>
+        <div className='my-20'>
             <h2 className="text-5xl">You have {orders.length} Orders</h2>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
