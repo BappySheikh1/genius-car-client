@@ -4,6 +4,7 @@ import image from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../useContexts/AuthProvider';
 import { FcGoogle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { setAuthToken } from '../../API/auth';
 
 const SingUp = () => {
     const {createUser,userEmailVerification,updateUserProfile}=useContext(AuthContext)
@@ -20,8 +21,9 @@ const SingUp = () => {
         const user =result.user
         console.log(user);
         form.reset();
-        handleUserEmail()
-        handleUserName(name)
+        handleUserEmail();
+        handleUserName(name);
+        setAuthToken(user);
      })
      .catch(error =>{
         console.log(error);

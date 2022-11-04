@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { setAuthToken } from '../../API/auth';
 import image from '../../assets/images/login/login.svg'
+import SocialLogIn from '../../Shared/SocialLogIn/SocialLogIn';
 import { AuthContext } from '../../useContexts/AuthProvider';
 
 
@@ -9,7 +11,7 @@ import { AuthContext } from '../../useContexts/AuthProvider';
 const Login = () => {
   const [userEmail,setUserEmail]=useState('')
     const [error,setError]=useState('')
-    const {userLogIn,forgetPassword}=useContext(AuthContext)
+    const {userLogIn,forgetPassword,googleLogIn}=useContext(AuthContext)
     const navigate=useNavigate()
     const location=useLocation()
     let from = location.state?.from?.pathname || "/";
@@ -67,7 +69,15 @@ const Login = () => {
     }
     
     const handleGoogleLogin=()=>{
-
+      googleLogIn()
+      .then(result =>{
+          const user =result.user
+          console.log(user);
+          setAuthToken(user);
+      })
+      .catch(err =>{
+          console.log(err);
+      })
     }
     const handleFaceBookLogin=()=>{
 
@@ -109,7 +119,7 @@ const Login = () => {
                  <button onClick={handleFaceBookLogin} className='btn btn-outline btn-info '>FaceBook</button>
                  <p className='p-5'>New to Genius Car <Link className='text-orange-600 font-bold text-center ' to='/singup'>Sign Up</Link></p>
             </div>
-      
+      {/* <SocialLogIn /> */}
     </div>
   </div>
         </div>
