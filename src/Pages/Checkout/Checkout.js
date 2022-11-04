@@ -30,10 +30,11 @@ const Checkout = () => {
     //     alert('phone number most 10 degiest')
     //   }
     
-    fetch('http://localhost:5000/orders', {
+    fetch('https://genius-car-server-topaz.vercel.app/orders', {
         method: 'POST',
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem('geniusToken')}`
         },
         body: JSON.stringify(order)
     })

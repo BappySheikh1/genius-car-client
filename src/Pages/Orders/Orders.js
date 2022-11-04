@@ -3,19 +3,33 @@ import { AuthContext } from '../../useContexts/AuthProvider';
 import OrderRow from './OrderRow';
 
 const Orders = () => {
-    const {user}=useContext(AuthContext);
+    const {user,logOutUser}=useContext(AuthContext);
      const [orders,setOrder]=useState([])
    
     useEffect(()=>{
-      fetch(`http://localhost:5000/orders?email=${user?.email}`)
-      .then(res => res.json())
-      .then(data => setOrder(data))
+      fetch(`https://genius-car-server-topaz.vercel.app/orders?email=${user?.email}`,{
+        headers: {
+            authorization: `Bearer ${localStorage.getItem('geniusToken')}`
+        }
+      })
+      .then(res => {
+        if(res.status === 401 || res.status === 403){
+           return logOutUser();
+        }
+        return res.json()
+    
+    })
+      .then(data => {
+        //  console.log(data);
+        setOrder(data)
+    }
+        )
 
-    },[user?.email])
+    },[user?.email,logOutUser])
     // console.log(orders);
     return (
         <div className='my-20'>
-            <h2 className="text-5xl">You have {orders.length} Orders</h2>
+            <h2 className="text-5xl">You have {orders?.length} Orders</h2>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>

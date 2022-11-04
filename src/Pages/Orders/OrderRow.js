@@ -6,7 +6,7 @@ const OrderRow = ({order,orders,setOrder}) => {
      const [orderService,setOrderService]=useState({})
 
     useEffect(()=>{
-        fetch(`http://localhost:5000/services/${service}`)
+        fetch(`https://genius-car-server-topaz.vercel.app/services/${service}`)
         .then(res => res.json())
         .then(data => setOrderService(data))
     },[service])
@@ -14,8 +14,11 @@ const OrderRow = ({order,orders,setOrder}) => {
     const handleDelete =(_id)=>{
       const proceed =window.confirm('are you sure delete this items')
       if(proceed){
-        fetch(`http://localhost:5000/orders/${_id}`,{
-            method:'DELETE'
+        fetch(`https://genius-car-server-topaz.vercel.app/orders/${_id}`,{
+            method:'DELETE',
+            headers: {
+              authorization: `Bearer ${localStorage.getItem('geniusToken')}`
+          }
         })
         .then(res => res.json())
         .then(data => {
@@ -31,10 +34,11 @@ const OrderRow = ({order,orders,setOrder}) => {
     }
 
     const handleUpdate=(_id)=>{
-      fetch(`http://localhost:5000/orders/${_id}`,{
+      fetch(`https://genius-car-server-topaz.vercel.app/orders/${_id}`,{
         method: 'PATCH', 
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem('geniusToken')}`
         },
         body: JSON.stringify({status: 'Approved'})
       })

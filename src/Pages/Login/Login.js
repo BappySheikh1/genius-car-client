@@ -28,7 +28,7 @@ const Login = () => {
              }
           console.log(user);
       //  JWT tokem
-       fetch('http://localhost:5000/jwt',{
+       fetch('https://genius-car-server-topaz.vercel.app/jwt',{
         method: "POST",
         headers:{
           'Content-type':"application/json"
@@ -40,10 +40,12 @@ const Login = () => {
         console.log(data);
         // local storage is not the best place to store jwt token
         localStorage.setItem('geniusToken',data.token)
+
+        navigate(from, { replace: true })
        })
       
 
-          navigate(from, { replace: true })
+       
         })
         .catch(error =>{
           console.log(error);
